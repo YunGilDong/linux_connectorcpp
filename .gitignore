@@ -1,0 +1,11 @@
+### file ###
+*.log
+*.slo
+*.lo
+*.o
+*.obj
+*.bak
+*.a
+.vscode
+
+# Executables file
