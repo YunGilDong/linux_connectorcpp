@@ -91,6 +91,36 @@ void ClsMariaDBcpp::Disconnect(void)
     Close();
 }
 //------------------------------------------------------------------------------
+// PrcExecute (Procedure execute)
+//------------------------------------------------------------------------------
+bool ClsMariaDBcpp::PrcExecute()
+{
+    bool ok  = true;
+    // if(res != NULL)
+    // {
+    //     delete res;
+    //     res = NULL;
+    // }
+    try
+    {
+        pstmt->executeUpdate();
+        res = pstmt->getResultSet();        
+        //Workaround: Makes sure there are no more ResultSets
+        while (pstmt->getMoreResults()) {
+            res = pstmt->getResultSet();            
+        }
+
+    } catch (sql::SQLException &e) {         
+        ok = false;       
+        std::stringstream strSqlExcep;
+        strSqlExcep<< "# ERR: SQLException in " << __FILE__<< "(" << __FUNCTION__ << ") on line "<< __LINE__<<endl;
+        ProcessException(strSqlExcep.str(), e);
+        throw e;
+    }
+    return (ok);
+
+}
+//------------------------------------------------------------------------------
 // Execute
 //------------------------------------------------------------------------------
 bool ClsMariaDBcpp::Execute()
@@ -117,8 +147,8 @@ bool ClsMariaDBcpp::Execute()
 //------------------------------------------------------------------------------
 void ClsMariaDBcpp::SetPrepareStmt(string query)
 {
-    if(pstmt != NULL)
-        delete pstmt;
+    // if(pstmt != NULL)
+    //     delete pstmt;
     try
     {
         strQuery = query;

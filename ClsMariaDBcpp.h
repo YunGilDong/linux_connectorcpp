@@ -90,6 +90,7 @@ public:
 
     bool Connect(void);
     void Disconnect(void);
+    bool PrcExecute();
     bool Execute();
     void SetPrepareStmt(string query);
     bool Init(MDB_DESC *pDesc, bool connect = false);    
